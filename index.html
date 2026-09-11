@@ -1,1 +1,99 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Analogsignal-Rechner</title><link rel="apple-touch-icon" href="icon.png"><link rel="icon" type="image/png" href="icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MSR Rechner"></head><body><h1>Analogsignal-Rechner</h1></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MSR Rechner">
+  <meta name="description" content="Moderner Rechner für lineare Analogsignale wie 4-20 mA und 0-10 V.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-512.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Analogsignal-Rechner</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">↗</div>
+      <div>
+        <p class="eyebrow">MSR TOOLBOX</p>
+        <h1>Analogsignal-Rechner</h1>
+      </div>
+      <button class="icon-button" id="themeButton" type="button" aria-label="Darstellung umschalten">☼</button>
+    </header>
+
+    <section class="hero-card">
+      <div class="result-copy">
+        <span id="resultLabel">Ausgangssignal</span>
+        <strong><span id="resultValue">13,600</span> <small id="resultUnit">mA</small></strong>
+        <p id="resultSentence">6 bar entsprechen 13,600 mA</p>
+      </div>
+      <div class="gauge" aria-hidden="true">
+        <svg viewBox="0 0 140 86" role="img">
+          <path class="gauge-track" d="M18 70 A52 52 0 0 1 122 70" pathLength="100"/>
+          <path class="gauge-progress" id="gaugeProgress" d="M18 70 A52 52 0 0 1 122 70" pathLength="100"/>
+          <circle cx="70" cy="70" r="5"/>
+          <line id="gaugeNeedle" x1="70" y1="70" x2="37" y2="70"/>
+        </svg>
+        <div class="gauge-meta"><span>0 %</span><b id="percentValue">60 %</b><span>100 %</span></div>
+      </div>
+    </section>
+
+    <nav class="mode-switch" aria-label="Berechnungsrichtung">
+      <button class="active" type="button" data-mode="processToSignal">Prozesswert → Signal</button>
+      <button type="button" data-mode="signalToProcess">Signal → Prozesswert</button>
+    </nav>
+
+    <section class="calculator-card">
+      <div class="section-heading">
+        <div><span class="step">1</span><h2>Messbereich</h2></div>
+        <select id="preset" aria-label="Vorlage auswählen">
+          <option value="custom">Eigene Werte</option>
+          <option value="pressure" selected>0…10 bar / 4…20 mA</option>
+          <option value="percent">0…100 % / 4…20 mA</option>
+          <option value="temperature">0…100 °C / 4…20 mA</option>
+          <option value="voltage">0…100 % / 0…10 V</option>
+          <option value="voltage2">0…100 % / 2…10 V</option>
+        </select>
+      </div>
+
+      <div class="field-grid three">
+        <label><span>Von</span><input id="pvMin" type="number" inputmode="decimal" value="0" step="any"></label>
+        <label><span>Bis</span><input id="pvMax" type="number" inputmode="decimal" value="10" step="any"></label>
+        <label><span>Einheit</span><input id="pvUnit" type="text" value="bar" maxlength="12"></label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section-heading compact"><div><span class="step">2</span><h2>Signalbereich</h2></div></div>
+      <div class="field-grid three">
+        <label><span>Von</span><input id="sigMin" type="number" inputmode="decimal" value="4" step="any"></label>
+        <label><span>Bis</span><input id="sigMax" type="number" inputmode="decimal" value="20" step="any"></label>
+        <label><span>Einheit</span><input id="sigUnit" type="text" value="mA" maxlength="12"></label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section-heading compact"><div><span class="step accent">3</span><h2 id="inputHeading">Prozesswert eingeben</h2></div></div>
+      <label class="primary-input">
+        <input id="inputValue" type="number" inputmode="decimal" value="6" step="any" aria-label="Zu berechnender Wert">
+        <span id="inputUnit">bar</span>
+      </label>
+      <p class="validation" id="validation" role="status"></p>
+    </section>
+
+    <section class="formula-card">
+      <button id="formulaToggle" type="button" aria-expanded="false">Formel anzeigen <span>⌄</span></button>
+      <div id="formulaContent" hidden>
+        <code id="formulaText">4 + ((6 - 0) / (10 - 0)) × (20 - 4) = 13,600 mA</code>
+      </div>
+    </section>
+
+    <footer>Lineare Skalierung für Inbetriebnahme und Fehlersuche</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
